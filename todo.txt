@@ -1,0 +1,16 @@
+steps:
+  - create a box
+
+mvp:
+  - keys that makes sounds when you avatar touches them
+    - black and white keys make different sounds
+    - keys change color when pressed
+  - "off" button that deletes the entity
+
+how to implement it:
+have event listener for click, find id of click target,
+map each id to a different soundURL
+
+
+bad way:
+make a diff script for each note

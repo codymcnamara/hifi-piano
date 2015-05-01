@@ -1,0 +1,12 @@
+
+cyberduck
+
+
+function onMouse(event)
+
+Controller.onMousePress(onMousePress)
+
+Script.update.connect(update)
+
+
+?v1

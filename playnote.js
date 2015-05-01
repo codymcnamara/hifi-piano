@@ -1,8 +1,8 @@
 (function() {
   print("hello");
-  var pianoSound = SoundCache.getSound("https://s3.amazonaws.com/hifi-public/sounds/doorbell.wav");
+  var pianoSound = SoundCache.getSound("https://raw.githubusercontent.com/codymcnamara/hifi-piano/master/notes/CDP_60.wav");
 
-  this.mousePressOnEntity = function(entityID, mouseEvent) {
+  this.mousePressOnEntity = function(entityId, mouseEvent) {
     print("clicked")
     this.entityId = entityId;
     if (mouseEvent.isLeftButton) {
