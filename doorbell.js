@@ -1,4 +1,5 @@
 (function() {
+  print("hello");
   var self = this;
   var lightCol = {
     red: 255,
