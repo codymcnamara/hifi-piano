@@ -1,4 +1,5 @@
 (function() {
+  print("hello")
   var pianoSound = SoundCache.getSound("https://s3.amazonaws.com/hifi-public/sounds/doorbell.wav");
 
   this.clickDownOnEntity = function(entityID, mouseEvent) {
