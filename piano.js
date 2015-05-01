@@ -1,50 +1,49 @@
-// create keys
+var keys = [];
 
-var position = Vec3.sum(MyAvatar.position, Quat.getFront(MyAvatar.orientation));
-
-var properties = {
-  type: "Box",
-  position: position,
-  color: { red: 0, green: 220, blue: 0 }
-};
-
-Ent = Entities.addEntity(properties);
-var props = Entities.getEntityProperties(Ent);
-print("heres the entitiy:" + JSON.stringify(props));
-
-print("Entity added");
-print(JSON.stringify(Entities.identifyEntity(Ent)));
+var basePosition = Vec3.sum(MyAvatar.position, Vec3.multiply(3, Quat.getFront(Camera.getOrientation())));
+for (var i = 0; i < 5; i++) {
+  var key = Entities.addEntity({
+    type: 'Box',
+    dimensions: {
+      x: 1,
+      y: 1,
+      z: 1
+    },
+    position: {
+      x: basePosition.x + (i),
+      y: basePosition.y,
+      z: basePosition.z
+    },
+    color: {
+      red: 250,
+      green: 250,
+      blue: 200
+    }
+  })
+  keys.push(key);
+}
 
 Script.setTimeout(function(){
-  print("heres the entitiy after timeout:" + JSON.stringify(props))
+  keys.forEach(function(key){
+    var props = Entities.getEntityProperties(key)
+    print('info ' + props.id);
+  });
 }, 1000);
+function cleanup() {
+  keys.forEach(function(key) {
+    Entities.deleteEntity(key);
+  });
+}
 
-var pianoSound = SoundCache.getSound("https://s3.amazonaws.com/hifi-public/sounds/doorbell.wav");
-
-Ent.mousePressOnEntity = function(entityId, mouseEvent) {
-  print("clicked");
-  Ent.entityId = entityId;
-  if (mouseEvent.isLeftButton) {
-    Ent.ding();
+function mousePressEvent(event) {
+  var pickRay = Camera.computePickRay(event.x, event.y);
+  var intersection = Entities.findRayIntersection(pickRay);
+  if (intersection.intersects) {
+    clickedEntity = intersection.entityID;
+    print("entity Id " + JSON.stringify(clickedEntity));
   }
 }
 
-Ent.ding = function(){
-  var position = Entities.getEntityProperties(Ent.entityId).position
-  if (pianoSound && pianoSound.downloaded) {
-    Audio.playSound(pianoSound, {
-      position: position
-    });
-  } else {
-    print("COULD NOT PLAY SOUND!");
-  }
-}
+Script.scriptEnding.connect(cleanup);
 
-
-
-
-function cleanup(){
-  Ent.deleteEntity();
-}
-
-Script.scriptEnding.connect(cleanup)
+Controller.mousePressEvent.connect(mousePressEvent);
