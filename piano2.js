@@ -17,7 +17,6 @@ urlArr.forEach(function(url, index){
   notesArr.push(SoundCache.getSound(url));
 });
 
-
 print(notesArr);
 
 var soundMap = {};
@@ -61,8 +60,8 @@ for (var i = 0; i < 5; i++) {
 Script.setTimeout(function(){
   for (var i = 0; i < keys.length; i++) {
     var props = Entities.getEntityProperties(keys[i])
-    var idString = JSON.stringify(props.id);
-    soundMap[idString] = notesArr[i];
+    var id = JSON.stringify(props.id);
+    soundMap[id] = notesArr[i];
   };
 }, 1000);
 
@@ -75,10 +74,11 @@ function cleanup() {
 function playNote(entityId){
 
   var position = Entities.getEntityProperties(entityId).position
-  print("soundMap " + JSON.stringify(soundMap));
-  if (soundMap[entityId] && (soundMap[entityId]).downloaded) {
-    Audio.playSound(soundMap[entityId], {
-      position: position,
+  var id = JSON.stringify(entityId);
+  // print("soundMap downloaded " + (soundMap[entityId]).downloaded);
+  if (soundMap[id] && soundMap[id].downloaded) {
+    Audio.playSound(soundMap[id], {
+      position: MyAvatar.position,
       volume: 1
     });
   } else {
@@ -101,3 +101,4 @@ function mousePressEvent(event) {
 Script.scriptEnding.connect(cleanup);
 
 Controller.mousePressEvent.connect(mousePressEvent);
+
